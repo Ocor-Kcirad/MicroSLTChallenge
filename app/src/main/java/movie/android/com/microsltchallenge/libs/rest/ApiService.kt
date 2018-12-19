@@ -17,6 +17,9 @@ interface ApiService {
     @DELETE("/movies/{id}")
     fun deleteMovie(@Path("id") id: String): Completable
 
+    @GET("/movies/{id}")
+    fun getMovie(@Path("id") id: String): Single<Movie>
+
     @PATCH("/movies/{id}")
     fun updateMovie(@Path("id") id: String, @Body movie: NewMovie): Single<Movie>
 

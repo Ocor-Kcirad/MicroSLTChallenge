@@ -5,7 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import movie.android.com.microsltchallenge.feature.moviedetail.ui.MovieDetailActivity
+import movie.android.com.microsltchallenge.libs.arch.ActionLiveData
+import movie.android.com.microsltchallenge.libs.rest.ApiClient
 import movie.android.com.microsltchallenge.libs.socket.MovieEvent
 import movie.android.com.microsltchallenge.libs.socket.MovieEventLiveData
 import movie.android.com.microsltchallenge.model.Movie
@@ -18,9 +23,9 @@ class MovieDetailViewModel : ViewModel() {
         private val instanceFactory = ViewModelProvider.NewInstanceFactory()
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             val instance = instanceFactory.create(modelClass)
-            val movie = intent.getParcelableExtra<Movie>(MovieDetailActivity.KEY_MOVIE)
+            val movie = intent.getStringExtra(MovieDetailActivity.KEY_MOVIE_ID)
             if (instance is MovieDetailViewModel) {
-                instance.initialize(movie)
+                instance.loadMovie(movie)
             }
             return instance
         }
@@ -30,6 +35,8 @@ class MovieDetailViewModel : ViewModel() {
 
     private val movieLiveData: MediatorLiveData<Movie> = MediatorLiveData()
     private val movieEventLiveData = MovieEventLiveData()
+    private val errorsLiveData = ActionLiveData<Throwable>()
+    private val disposables = CompositeDisposable()
 
     init {
         movieLiveData.addSource(movieEventLiveData) { event ->
@@ -42,7 +49,17 @@ class MovieDetailViewModel : ViewModel() {
 
     }
 
-    fun initialize(movie: Movie) = movieLiveData.postValue(movie)
+    fun loadMovie(id: String) {
+        disposables.add(ApiClient
+            .service
+            .getMovie(id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(
+                { },
+                { errorsLiveData.value = it }
+            ))
+    }
 
     private fun updateMovieItem(movieEvent: MovieEvent) {
         movieLiveData.postValue(movieEvent.movie)
@@ -50,6 +67,7 @@ class MovieDetailViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+        disposables.clear()
         movieEventLiveData.disconnect()
     }
 }

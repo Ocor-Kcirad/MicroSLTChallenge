@@ -16,7 +16,7 @@ import movie.android.com.microsltchallenge.model.Movie
 class MovieDetailActivity : AppCompatActivity() {
 
     companion object {
-        const val KEY_MOVIE = "movie.android.com.microsltchallenge.feature.moviedetail.ui.movie"
+        const val KEY_MOVIE_ID = "movie.android.com.microsltchallenge.feature.moviedetail.ui.movie-id"
     }
 
     private lateinit var viewModel: MovieDetailViewModel
@@ -31,7 +31,6 @@ class MovieDetailActivity : AppCompatActivity() {
             .get(MovieDetailViewModel::class.java)
 
         viewModel.movie.observe(this, Observer { updateView(it) })
-
     }
 
     private fun setupToolbar() {
