@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_movie_list.*
 import kotlinx.android.synthetic.main.content_movie_list.*
 import movie.android.com.microsltchallenge.R
+import movie.android.com.microsltchallenge.feature.moviedetail.ui.MovieDetailActivity
 import movie.android.com.microsltchallenge.feature.movielist.MovieListViewModel
 import movie.android.com.microsltchallenge.model.Movie
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 
 
@@ -51,7 +53,8 @@ class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener, M
     }
 
     override fun onClickMovie(movie: Movie) {
-
+        val intent = intentFor<MovieDetailActivity>(MovieDetailActivity.KEY_MOVIE to movie)
+        startActivity(intent)
     }
 
     override fun onDeleteMovie(movie: Movie) {
