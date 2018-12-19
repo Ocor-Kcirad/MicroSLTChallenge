@@ -3,8 +3,22 @@
     <string name="action_search">Search</string>
     <string name="title_activity_movie_detail">Details</string>
     <string name="label_rating">Rating:</string>
+    <string name="label_title">Title:</string>
     <string name="label_year">Year:</string>
     <string name="label_genre">Genre:</string>
     <string name="label_summary">Summary</string>
+    <string name="label_url">Thumbnail</string>
     <string name="label_movie_thumbnail_description">Movie Thumbnail</string>
+    <string name="label_hint_genre">e.g. Adventure</string>
+    <string name="label_hint_rating">(1–10)</string>
+    <string name="label_hint_year">e.g. 1991</string>
+    <string name="label_hint_url">Paste URL</string>
+    <string name="lable_hint_summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum.
+    </string>
+    <string name="label_new_entry">New Movie</string>
+    <string name="label_hint_title">e.g. Starwars</string>
 </resources>

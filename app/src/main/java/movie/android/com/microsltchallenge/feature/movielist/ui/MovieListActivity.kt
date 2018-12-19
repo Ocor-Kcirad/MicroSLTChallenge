@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_movie_list.*
 import kotlinx.android.synthetic.main.content_movie_list.*
+import kotlinx.android.synthetic.main.dialog_create_movie.*
 import movie.android.com.microsltchallenge.R
 import movie.android.com.microsltchallenge.feature.moviedetail.ui.MovieDetailActivity
 import movie.android.com.microsltchallenge.feature.movielist.MovieListViewModel
 import movie.android.com.microsltchallenge.model.Movie
+import movie.android.com.microsltchallenge.model.NewMovie
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 
@@ -28,7 +30,7 @@ class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener, M
         setContentView(R.layout.activity_movie_list)
         setSupportActionBar(toolbar)
         setupRecyclerView()
-
+        setupFab()
         viewModel = ViewModelProviders.of(this).get(MovieListViewModel::class.java)
         viewModel.movies.observe(this, Observer { adapter.setItems(it) })
         viewModel.errors.observe(this, Observer { toast("Something went wrong") })
@@ -70,6 +72,28 @@ class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener, M
         adapter = MoviesAdapter(this)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.adapter = adapter
+    }
+
+    private fun setupFab() {
+        fab.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                    if (dialog is AlertDialog) {
+                        val title = dialog.titleEditText.text.toString()
+                        val year = dialog.yearEditText.text.toString().toInt()
+                        val rating = dialog.ratingEditText.text.toString().toInt()
+                        val genre = dialog.genreEditText.text.toString()
+                        val summary = dialog.summaryEditText.text.toString()
+                        val thumbnail = dialog.urlEditText.text.toString()
+                        val newMovie = NewMovie(title, summary, thumbnail, genre, year, rating)
+                        viewModel.createMovie(newMovie)
+                    }
+                }
+                .setCancelable(false)
+                .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
+                .setView(R.layout.dialog_create_movie)
+                .show()
+        }
     }
 
 }

@@ -13,6 +13,7 @@ import movie.android.com.microsltchallenge.libs.rest.ApiClient
 import movie.android.com.microsltchallenge.libs.socket.MovieEvent
 import movie.android.com.microsltchallenge.libs.socket.MovieEventLiveData
 import movie.android.com.microsltchallenge.model.Movie
+import movie.android.com.microsltchallenge.model.NewMovie
 
 //TODO: Implement d.i
 class MovieListViewModel : ViewModel() {
@@ -53,17 +54,14 @@ class MovieListViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
-                {
-
-                    moviesLiveData.value = it
-                },
+                { moviesLiveData.value = it },
                 { errorsLiveData.value = it }
             ))
     }
 
     fun filterMovies(query: String?) = filterLiveData.postValue(query)
 
-    fun createMovie(movie: Movie) {
+    fun createMovie(movie: NewMovie) {
         disposables.add(ApiClient
             .service
             .createMovie(movie)
