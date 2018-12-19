@@ -25,23 +25,11 @@ class MovieListViewModel : ViewModel() {
 
     init {
         moviesLiveData.addSource(moviesSocketLiveData) { event ->
-            val target = event.movie
-            val items = moviesLiveData.value?.toMutableList() ?: mutableListOf()
             when (event.operation) {
-                MovieEvent.UPDATE_OPERATION -> {
-                    val index = items.indexOfFirst { target.id == it.id }
-                    items[index] = target
-
-                }
-                MovieEvent.INSERT_OPERATION -> {
-                    items.add(target)
-                }
-                MovieEvent.DELETE_OPERATION -> {
-                    val index = items.indexOfFirst { target.id == it.id }
-                    items.removeAt(index)
-                }
+                MovieEvent.UPDATE_OPERATION -> updateMovieItem(event)
+                MovieEvent.INSERT_OPERATION -> insertMovieItem(event)
+                MovieEvent.DELETE_OPERATION -> deleteMovieItem(event)
             }
-            moviesLiveData.value = items
         }
     }
 
@@ -96,6 +84,28 @@ class MovieListViewModel : ViewModel() {
             ))
     }
 
+    private fun updateMovieItem(movieEvent: MovieEvent) {
+        val target = movieEvent.movie
+        val items = moviesLiveData.value?.toMutableList() ?: mutableListOf()
+        val index = items.indexOfFirst { target.id == it.id }
+        items[index] = target
+        moviesLiveData.value = items
+    }
+
+    private fun insertMovieItem(movieEvent: MovieEvent) {
+        val target = movieEvent.movie
+        val items = moviesLiveData.value?.toMutableList() ?: mutableListOf()
+        items.add(target)
+        moviesLiveData.value = items
+    }
+
+    private fun deleteMovieItem(movieEvent: MovieEvent) {
+        val target = movieEvent.movie
+        val items = moviesLiveData.value?.toMutableList() ?: mutableListOf()
+        val index = items.indexOfFirst { target.id == it.id }
+        items.removeAt(index)
+        moviesLiveData.value = items
+    }
 
     override fun onCleared() {
         super.onCleared()
