@@ -56,7 +56,7 @@ class MovieDetailViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
-                { },
+                { movieLiveData.value = it },
                 { errorsLiveData.value = it }
             ))
     }
