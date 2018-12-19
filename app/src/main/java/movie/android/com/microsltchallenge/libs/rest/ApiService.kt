@@ -18,6 +18,6 @@ interface ApiService {
     fun deleteMovie(@Path("id") id: String): Completable
 
     @PATCH("/movies/{id}")
-    fun updateMovie(@Path("id") id: String, @Body movie: Movie): Single<Movie>
+    fun updateMovie(@Path("id") id: String, @Body movie: NewMovie): Single<Movie>
 
 }

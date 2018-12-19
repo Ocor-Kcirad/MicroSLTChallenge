@@ -18,6 +18,7 @@ class MoviesAdapter(private val callback: Delegate) : RecyclerView.Adapter<Movie
     interface Delegate {
         fun onClickMovie(movie: Movie)
         fun onDeleteMovie(movie: Movie)
+        fun onEditMovie(movie: Movie)
     }
 
     fun setItems(newItems: List<Movie>) {
@@ -60,13 +61,16 @@ class MoviesAdapter(private val callback: Delegate) : RecyclerView.Adapter<Movie
         }
 
         init {
-            itemView.setOnClickListener {
+            itemView.thumbnail.setOnClickListener {
                 movie?.let { movie -> callback.onClickMovie(movie) }
             }
 
-            itemView.setOnLongClickListener {
+            itemView.thumbnail.setOnLongClickListener {
                 movie?.let { movie -> callback.onDeleteMovie(movie) }
                 true
+            }
+            itemView.editButton.setOnClickListener {
+                movie?.let { movie -> callback.onEditMovie(movie) }
             }
         }
 

@@ -21,4 +21,5 @@
     </string>
     <string name="label_new_entry">New Movie</string>
     <string name="label_hint_title">e.g. Starwars</string>
+    <string name="label_edit_movie">Edit movie</string>
 </resources>

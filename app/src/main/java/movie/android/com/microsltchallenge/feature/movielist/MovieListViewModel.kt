@@ -85,10 +85,10 @@ class MovieListViewModel : ViewModel() {
             ))
     }
 
-    fun updateMovie(movie: Movie) {
+    fun updateMovie(id: String, movie: NewMovie) {
         disposables.add(ApiClient
             .service
-            .updateMovie(movie.id, movie)
+            .updateMovie(id, movie)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
