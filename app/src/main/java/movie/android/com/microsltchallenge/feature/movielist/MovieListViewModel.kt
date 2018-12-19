@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import movie.android.com.microsltchallenge.libs.arch.ActionLiveData
 import movie.android.com.microsltchallenge.libs.rest.ApiClient
 import movie.android.com.microsltchallenge.libs.socket.MovieEvent
-import movie.android.com.microsltchallenge.libs.socket.MoviesLiveData
+import movie.android.com.microsltchallenge.libs.socket.MovieEventLiveData
 import movie.android.com.microsltchallenge.model.Movie
 
 //TODO: Implement d.i
@@ -19,7 +19,7 @@ class MovieListViewModel : ViewModel() {
     val errors: LiveData<Throwable> get() = errorsLiveData
 
     private val moviesLiveData: MediatorLiveData<List<Movie>> = MediatorLiveData()
-    private val moviesSocketLiveData = MoviesLiveData()
+    private val moviesSocketLiveData = MovieEventLiveData()
     private val errorsLiveData = ActionLiveData<Throwable>()
     private val disposables = CompositeDisposable()
 

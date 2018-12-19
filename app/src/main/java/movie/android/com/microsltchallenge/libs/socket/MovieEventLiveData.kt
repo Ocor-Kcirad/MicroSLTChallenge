@@ -8,7 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 
-class MoviesLiveData : MutableLiveData<MovieEvent>() {
+class MovieEventLiveData : MutableLiveData<MovieEvent>() {
 
     companion object {
         private const val EVENT_NAME = "movies"
@@ -28,7 +28,6 @@ class MoviesLiveData : MutableLiveData<MovieEvent>() {
     init {
         socket.on(EVENT_NAME, eventListener)
     }
-
 
     override fun onInactive() {
         super.onInactive()
