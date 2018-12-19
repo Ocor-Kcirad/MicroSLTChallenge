@@ -12,6 +12,7 @@ import movie.android.com.microsltchallenge.R
 import movie.android.com.microsltchallenge.feature.moviedetail.MovieDetailViewModel
 import movie.android.com.microsltchallenge.model.Movie
 
+
 class MovieDetailActivity : AppCompatActivity() {
 
     companion object {
@@ -23,7 +24,7 @@ class MovieDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_detail)
-        setSupportActionBar(toolbar)
+        setupToolbar()
 
         viewModel = ViewModelProviders
             .of(this, MovieDetailViewModel.ViewModelFactory(intent))
@@ -31,7 +32,13 @@ class MovieDetailActivity : AppCompatActivity() {
 
         viewModel.movie.observe(this, Observer { updateView(it) })
 
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { finish() }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     private fun updateView(movie: Movie) {

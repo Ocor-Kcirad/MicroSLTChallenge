@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MicroSLTChallenge</string>
+    <string name="app_name">Movie App</string>
     <string name="action_search">Search</string>
     <string name="title_activity_movie_detail">Details</string>
     <string name="label_rating">Rating:</string>

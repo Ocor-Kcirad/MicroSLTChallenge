@@ -31,6 +31,8 @@ class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener, M
         setSupportActionBar(toolbar)
         setupRecyclerView()
         setupFab()
+        showHint()
+
         viewModel = ViewModelProviders.of(this).get(MovieListViewModel::class.java)
         viewModel.movies.observe(this, Observer { adapter.setItems(it) })
         viewModel.errors.observe(this, Observer { toast("Something went wrong") })
@@ -94,6 +96,15 @@ class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener, M
                 .setView(R.layout.dialog_create_movie)
                 .show()
         }
+    }
+
+    private fun showHint() {
+        AlertDialog.Builder(this)
+            .setTitle("Hint")
+            .setMessage("Long press to delete an entry \n")
+            .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
+            .setCancelable(true)
+            .show()
     }
 
 }
