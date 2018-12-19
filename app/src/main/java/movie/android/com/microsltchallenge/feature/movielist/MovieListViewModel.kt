@@ -25,9 +25,9 @@ class MovieListViewModel : ViewModel() {
 
     init {
         moviesLiveData.addSource(moviesSocketLiveData) { event ->
-            val target = event.o
+            val target = event.movie
             val items = moviesLiveData.value?.toMutableList() ?: mutableListOf()
-            when (event.op) {
+            when (event.operation) {
                 MovieEvent.UPDATE_OPERATION -> {
                     val index = items.indexOfFirst { target.id == it.id }
                     items[index] = target
