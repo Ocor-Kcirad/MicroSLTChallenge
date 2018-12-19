@@ -82,13 +82,18 @@ class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener, M
                 .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     if (dialog is AlertDialog) {
                         val title = dialog.titleEditText.text.toString()
-                        val year = dialog.yearEditText.text.toString().toInt()
-                        val rating = dialog.ratingEditText.text.toString().toInt()
+                        val year = dialog.yearEditText.text.toString().toIntOrNull() ?: 0
+                        val rating = dialog.ratingEditText.text.toString().toIntOrNull() ?: 0
                         val genre = dialog.genreEditText.text.toString()
                         val summary = dialog.summaryEditText.text.toString()
                         val thumbnail = dialog.urlEditText.text.toString()
-                        val newMovie = NewMovie(title, summary, thumbnail, genre, year, rating)
-                        viewModel.createMovie(newMovie)
+
+                        if (title.isBlank() || year == 0 || rating == 0 || genre.isBlank() || summary.isBlank() || thumbnail.isBlank()) {
+                            toast("Incomplete details")
+                        } else {
+                            val newMovie = NewMovie(title, summary, thumbnail, genre, year, rating)
+                            viewModel.createMovie(newMovie)
+                        }
                     }
                 }
                 .setCancelable(false)
