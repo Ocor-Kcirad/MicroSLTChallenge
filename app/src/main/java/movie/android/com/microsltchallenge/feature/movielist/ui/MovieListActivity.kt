@@ -2,6 +2,7 @@ package movie.android.com.microsltchallenge.feature.movielist.ui
 
 import android.os.Bundle
 import android.view.Menu
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -11,10 +12,11 @@ import kotlinx.android.synthetic.main.activity_movie_list.*
 import kotlinx.android.synthetic.main.content_movie_list.*
 import movie.android.com.microsltchallenge.R
 import movie.android.com.microsltchallenge.feature.movielist.MovieListViewModel
+import movie.android.com.microsltchallenge.model.Movie
 import org.jetbrains.anko.toast
 
 
-class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
+class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MoviesAdapter.Delegate {
 
     private lateinit var viewModel: MovieListViewModel
     private lateinit var adapter: MoviesAdapter
@@ -40,7 +42,7 @@ class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         viewModel.filterMovies(query)
-        return true
+        return false
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
@@ -48,8 +50,21 @@ class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         return true
     }
 
+    override fun onClickMovie(movie: Movie) {
+
+    }
+
+    override fun onDeleteMovie(movie: Movie) {
+        AlertDialog.Builder(this)
+            .setTitle("Delete Movie?")
+            .setPositiveButton(android.R.string.ok) { _, _ -> viewModel.deleteMovie(movie) }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
+            .setCancelable(true)
+            .show()
+    }
+
     private fun setupRecyclerView() {
-        adapter = MoviesAdapter()
+        adapter = MoviesAdapter(this)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.adapter = adapter
     }

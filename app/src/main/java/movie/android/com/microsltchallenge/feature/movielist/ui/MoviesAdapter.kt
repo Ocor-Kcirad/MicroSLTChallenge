@@ -11,10 +11,14 @@ import kotlinx.android.synthetic.main.item_movie.view.*
 import movie.android.com.microsltchallenge.R
 import movie.android.com.microsltchallenge.model.Movie
 
-//TODO: Add diffutil
-class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
+class MoviesAdapter(private val callback: Delegate) : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     private val items = mutableListOf<Movie>()
+
+    interface Delegate {
+        fun onClickMovie(movie: Movie)
+        fun onDeleteMovie(movie: Movie)
+    }
 
     fun setItems(newItems: List<Movie>) {
         val result = DiffUtil.calculateDiff(DiffCallback(items, newItems))
@@ -23,7 +27,7 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
         result.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int) = ViewHolder.create(viewGroup)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int) = ViewHolder.create(viewGroup, callback)
 
     override fun getItemCount() = items.size
 
@@ -43,18 +47,31 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val callback: Delegate) : RecyclerView.ViewHolder(itemView) {
 
         private val requestOptions = RequestOptions().placeholder(R.drawable.image_placeholder)
+        private var movie: Movie? = null
 
         companion object {
-            fun create(parent: ViewGroup): ViewHolder = LayoutInflater
+            fun create(parent: ViewGroup, callback: Delegate): ViewHolder = LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.item_movie, parent, false)
-                .let { ViewHolder(it) }
+                .let { ViewHolder(it, callback) }
+        }
+
+        init {
+            itemView.setOnClickListener {
+                movie?.let { movie -> callback.onClickMovie(movie) }
+            }
+
+            itemView.setOnLongClickListener {
+                movie?.let { movie -> callback.onDeleteMovie(movie) }
+                true
+            }
         }
 
         fun bind(movie: Movie) {
+            this.movie = movie
             Glide.with(itemView).load(movie.thumbnailUrl).apply(requestOptions).into(itemView.thumbnail)
             itemView.titleTextView.text = movie.title
             itemView.genreTextView.text = movie.genres

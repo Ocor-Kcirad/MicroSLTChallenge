@@ -75,10 +75,10 @@ class MovieListViewModel : ViewModel() {
             ))
     }
 
-    fun deleteMovie(id: String) {
+    fun deleteMovie(movie: Movie) {
         disposables.add(ApiClient
             .service
-            .deleteMovie(id)
+            .deleteMovie(movie.id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
