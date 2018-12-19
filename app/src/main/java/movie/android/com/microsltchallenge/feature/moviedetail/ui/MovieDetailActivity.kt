@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_movie_detail.*
 import kotlinx.android.synthetic.main.content_movie_detail.*
 import movie.android.com.microsltchallenge.R
 import movie.android.com.microsltchallenge.feature.moviedetail.MovieDetailViewModel
+import movie.android.com.microsltchallenge.model.Movie
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -28,16 +29,18 @@ class MovieDetailActivity : AppCompatActivity() {
             .of(this, MovieDetailViewModel.ViewModelFactory(intent))
             .get(MovieDetailViewModel::class.java)
 
-        viewModel.movie.observe(this, Observer {
-            titleTextView.text = it.title
-            genreTextView.text = it.genres
-            yearTextView.text = it.year.toString()
-            ratingTextView.text = it.rating.toString()
-            summaryTextView.text = it.summary
-            val options = RequestOptions().placeholder(R.drawable.image_placeholder)
-            Glide.with(this).load(it.thumbnailUrl).apply(options).into(thumbnailImageView)
-        })
+        viewModel.movie.observe(this, Observer { updateView(it) })
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun updateView(movie: Movie) {
+        titleTextView.text = movie.title
+        genreTextView.text = movie.genres
+        yearTextView.text = movie.year.toString()
+        ratingTextView.text = movie.rating.toString()
+        summaryTextView.text = movie.summary
+        val options = RequestOptions().placeholder(R.drawable.image_placeholder)
+        Glide.with(this).load(movie.thumbnailUrl).apply(options).into(thumbnailImageView)
     }
 }
