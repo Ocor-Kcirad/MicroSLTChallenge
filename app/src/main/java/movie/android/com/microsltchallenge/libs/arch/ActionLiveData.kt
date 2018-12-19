@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 
 class ActionLiveData<T> : MutableLiveData<T>() {
 
-
     @MainThread
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
 
