@@ -57,7 +57,7 @@ class MovieListActivity : AppCompatActivity(), SearchView.OnQueryTextListener, M
     }
 
     override fun onClickMovie(movie: Movie) {
-        val intent = intentFor<MovieDetailActivity>(MovieDetailActivity.KEY_MOVIE_ID to movie)
+        val intent = intentFor<MovieDetailActivity>(MovieDetailActivity.KEY_MOVIE_ID to movie.id)
         startActivity(intent)
     }
 
