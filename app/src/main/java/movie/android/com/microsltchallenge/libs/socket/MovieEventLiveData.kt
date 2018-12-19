@@ -25,16 +25,14 @@ class MovieEventLiveData : MutableLiveData<MovieEvent>() {
         postValue(gson.fromJson<MovieEvent>(it[0].toString(), type))
     }
 
-    override fun onInactive() {
-        super.onInactive()
-        socket.disconnect()
-        socket.off(EVENT_NAME, eventListener)
-    }
-
-    override fun onActive() {
-        super.onActive()
+    init {
         socket.on(EVENT_NAME, eventListener)
         socket.connect()
+    }
+
+    fun disconnect() {
+        socket.disconnect()
+        socket.off(EVENT_NAME, eventListener)
     }
 
 }

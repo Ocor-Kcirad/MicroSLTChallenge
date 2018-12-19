@@ -128,5 +128,6 @@ class MovieListViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         disposables.clear()
+        movieEventLiveData.disconnect()
     }
 }

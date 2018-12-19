@@ -48,5 +48,8 @@ class MovieDetailViewModel : ViewModel() {
         movieLiveData.postValue(movieEvent.movie)
     }
 
-
+    override fun onCleared() {
+        super.onCleared()
+        movieEventLiveData.disconnect()
+    }
 }
